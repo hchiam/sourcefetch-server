@@ -1,0 +1,19 @@
+{
+  "name": "my-glitch-app",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.15.3",
+    "request": "^2.73.0",
+    "google": "^2.0.0",
+    "cheerio": "^0.20.0"
+  },
+  "engines": {
+    "node": "8.1.x"
+  },
+  "license": "MIT"
+}
