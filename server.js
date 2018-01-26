@@ -23,8 +23,8 @@ app.get("/:query", (req, res) => {
   // var r = test_promise_html(req.params.query);
   // var r = test_request(req.params.query);
   // var r = search_top_url(req.params.query,'javascript');
-  var r = test_get_html_from_search(req.params.query,'javascript');
-  // var r = test_get_element_from_html_from_search(req.params.query,'javascript');
+  // var r = test_get_html_from_search(req.params.query,'javascript');
+  var r = test_get_element_from_html_from_search(req.params.query,'javascript');
   
   r.then(function(result) {
     res.type('json').send(
@@ -176,12 +176,7 @@ function get_html(url) {
       if (error) {
         reject(error);
       } else {
-        resolve(
-          {
-            url:url,
-            body:body
-          }
-        );
+        resolve(body);
       }
     });
   });
@@ -196,6 +191,8 @@ function test_get_element_from_html_from_search(query,language) {
 }
 
 function scrape(html) {
-  $ = cheerio.load(html);
-  return $('div.accepted-answer pre code').text();
+  return new Promise((resolve, reject) => {
+    $ = cheerio.load(html);
+    resolve($('div.accepted-answer pre code').text());
+  });
 }
