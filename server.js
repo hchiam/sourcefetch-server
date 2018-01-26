@@ -1,7 +1,12 @@
+// use express to write node.js app code faster
 const express = require('express');
 const app = express();
+
+// import special functionality
 const request = require('request');
 const cheerio = require('cheerio');
+const google = require('google');
+google.resultsPerPage = 1;
 
 app.use(express.static('public'));
 
@@ -15,8 +20,11 @@ app.get("/:query", (req, res) => {
   // ******* HERE'S WHERE IT TAKES A QUERY AND RETURNS SOMETHING *******
   
   // var r = test_promise_github_json(req.params.query);
-  var r = test_promise_html(req.params.query);
-  // var r = test_cheerio(req.params.query);
+  // var r = test_promise_html(req.params.query);
+  // var r = test_request(req.params.query);
+  // var r = search_top_url(req.params.query,'javascript');
+  var r = test_get_html_from_search(req.params.query,'javascript');
+  // var r = test_get_element_from_html_from_search(req.params.query,'javascript');
   
   r.then(function(result) {
     res.type('json').send(
@@ -115,7 +123,7 @@ function test_promise_html(query) {
   });
 }
 
-function test_cheerio(query) {
+function test_request(query) {
   var url = 'https://en.wikipedia.org/wiki/' + query;
   var options = {
       url: url
@@ -134,9 +142,60 @@ function test_cheerio(query) {
         );
       }
     });
-  }).then(function(html) {
-    const $ = cheerio.load(html);
-    // return {scrape:$('div.accepted-answer pre code').text()};
-    return {scrape:$('div.mw-parser-output').text()};
   });
+}
+
+function search_top_url(query, language) {
+  return new Promise((resolve, reject) => {
+    let searchString = query + " in " + language + " site:stackoverflow.com";
+    google(searchString, (err, res) => {
+      if (err) {
+        reject({
+          reason: 'A search error occured :('
+        });
+      } else if (res.links.length === 0) {
+        reject({
+          reason: 'No results found :('
+        });
+      } else {
+        resolve(res.links[0].href);
+      }
+    });
+  });
+}
+
+function get_html(url) {
+  var options = {
+      url: url,
+      headers: {
+          'User-Agent': 'request'
+      }
+  };
+  return new Promise(function(resolve, reject) {
+    request.get(options,function(error,response,body){
+      if (error) {
+        reject(error);
+      } else {
+        resolve(
+          {
+            url:url,
+            body:body
+          }
+        );
+      }
+    });
+  });
+}
+
+function test_get_html_from_search(query,language) {
+  return search_top_url(query,language).then(url => get_html(url));
+}
+
+function test_get_element_from_html_from_search(query,language) {
+  return test_get_html_from_search(query,language).then(html => scrape(html));
+}
+
+function scrape(html) {
+  $ = cheerio.load(html);
+  return $('div.accepted-answer pre code').text();
 }
