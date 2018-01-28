@@ -44,12 +44,15 @@ const listener = app.listen(process.env.PORT, () => {
   console.log('Your app is listening on port ' + listener.address().port);
 });
 
-// make this app respond to requests, like this one: https://sourcefetch-server.glitch.me/quicksort
-app.get("/:query", (request, response) => {
+// make this app respond to requests, like this one: https://sourcefetch-server.glitch.me/fetch/?q=quicksort&lang=python
+app.get("/fetch", (request, response) => { // you can optionally specify a programming language
   
   // set up search for code snippet
-  let searchString = request.params.query; // e.g.: query = "quicksort" <-- https://sourcefetch-server.glitch.me/quicksort
-  let programmingLanguage = 'javascript';
+  let searchString = request.query.q; // e.g.: q = "quicksort" <-- https://sourcefetch-server.glitch.me/fetch/?q=quicksort
+  let programmingLanguage = 'javascript'; // JS by default
+  if (request.query.lang !== undefined) {
+    programmingLanguage = request.query.lang; // e.g.: lang=python <-- https://sourcefetch-server.glitch.me/fetch/?q=quicksort&lang=python
+  }
   
   // get code snippet
   let codeSnippetFound = getCode(searchString, programmingLanguage);
