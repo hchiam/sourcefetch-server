@@ -1,10 +1,11 @@
 * {
-  background: maroon;
+  background: rgb(40,40,30);
 }
 
 body, html {
   height: 100%;
   display: grid;
+  font-family: avenir, arial;
 }
 
 .main {
@@ -12,11 +13,14 @@ body, html {
   text-align: center;
 }
 
-p, h1, h2 {
-  font-family: arial;
+h1, h2 {
   color: white;
 }
 
+p {
+  color: cyan;
+}
+
 a {
-  color: lightblue;
+  color: lawngreen;
 }
