@@ -2,6 +2,8 @@
 
 Just one of the things I'm learning. <a target="_blank" href="https://github.com/hchiam/learning">https://github.com/hchiam/learning</a>
 
+Originally intended for use within my <a href="https://github.com/hchiam/language-user-interface" target="_blank">LUI</a> demo <a href="https://codepen.io/hchiam/full/WOLOJG" target="_blank">here</a>.
+
 **Live demo:** <a href="https://codepen.io/hchiam/full/PEMgBN/" target="_blank">https://codepen.io/hchiam/full/PEMgBN/</a>
 
 **Server:** <a href="https://sourcefetch-server.glitch.me/" target="_blank">https://sourcefetch-server.glitch.me/</a>
