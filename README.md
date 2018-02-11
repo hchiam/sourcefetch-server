@@ -1,5 +1,7 @@
 # sourcefetch-server
 
+[![Build Status](https://travis-ci.org/hchiam/sourcefetch-server.svg?branch=master)](https://travis-ci.org/hchiam/sourcefetch-server)
+
 Just one of the things I'm learning. <a target="_blank" href="https://github.com/hchiam/learning">https://github.com/hchiam/learning</a>
 
 Originally intended for use within my <a href="https://github.com/hchiam/language-user-interface" target="_blank">LUI</a> demo <a href="https://codepen.io/hchiam/full/WOLOJG" target="_blank">here</a>.
