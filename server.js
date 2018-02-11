@@ -40,7 +40,7 @@ if (!process.env.DISABLE_XORIGIN) {
 app.use(express.static('public'));
 
 // make this app actually listen for requests
-const listener = app.listen(process.env.PORT, () => {
+const listener = app.listen(process.env.PORT | 3000, () => { // | 3000 in case testing locally
   console.log('Your app is listening on port ' + listener.address().port);
 });
 

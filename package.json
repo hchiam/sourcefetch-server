@@ -12,6 +12,10 @@
     "google": "^2.0.0",
     "cheerio": "^0.20.0"
   },
+  "devDependencies": {
+    "supertest": "^3.0.0",
+    "tape": "^4.8.0"
+  },
   "engines": {
     "node": "8.1.x"
   },
