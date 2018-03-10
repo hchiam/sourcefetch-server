@@ -1,6 +1,6 @@
 # sourcefetch-server
 
-[![Build Status](https://travis-ci.org/hchiam/sourcefetch-server.svg?branch=master)](https://travis-ci.org/hchiam/sourcefetch-server)
+[![Build Status](https://travis-ci.org/hchiam/sourcefetch-server.svg?branch=master)](https://travis-ci.org/hchiam/sourcefetch-server) [![HitCount](http://hits.dwyl.io/hchiam/sourcefetch-server.svg)](http://hits.dwyl.io/hchiam/sourcefetch-server)
 
 Just one of the things I'm learning. <a target="_blank" href="https://github.com/hchiam/learning">https://github.com/hchiam/learning</a>
 
