@@ -11,6 +11,8 @@
  * *************************
  */
 
+'use strict';
+
 // import express.js to make it easier to write this app's code
 const express = require('express');
 const app = express();
