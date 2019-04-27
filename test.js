@@ -1,3 +1,5 @@
+'use strict';
+
 const test = require('tape').test;
 const request = require('request');
 const supertest = require('supertest');
