@@ -116,7 +116,7 @@ function getText(html) {
   return new Promise((resolve, reject) => {
     
     // use html --> get specific html element --> get text
-    $ = cheerio.load(html);
+    let $ = cheerio.load(html);
     resolve($('div.accepted-answer pre code').text()); // get text of code element in a pre in a div with class .accepted-answer
     
   });
