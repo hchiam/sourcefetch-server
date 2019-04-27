@@ -4,6 +4,14 @@
 
 Just one of the things I'm learning. <a target="_blank" href="https://github.com/hchiam/learning">https://github.com/hchiam/learning</a>
 
+**Setup:**
+```
+git clone https://github.com/hchiam/sourcefetch-server.git
+cd sourcefetch-server
+npm install
+node test.js
+```
+
 Originally intended for use within my <a href="https://github.com/hchiam/language-user-interface" target="_blank">LUI</a> demo <a href="https://codepen.io/hchiam/full/WOLOJG" target="_blank">here</a>.
 
 **Live demo:** <a href="https://codepen.io/hchiam/full/PEMgBN/" target="_blank">https://codepen.io/hchiam/full/PEMgBN/</a>
