@@ -1,3 +1,5 @@
+'use strict';
+
 /* ******* OVERVIEW: *******
  * 
  * A good place to start reading: getCode. Give it a searchString and a programmingLanguage to : 
@@ -10,8 +12,6 @@
  * 
  * *************************
  */
-
-'use strict';
 
 // import express.js to make it easier to write this app's code
 const express = require('express');
@@ -64,6 +64,8 @@ app.get("/fetch", (request, response) => { // you can optionally specify a progr
     response.type('json').send(
       {'code':result}
     );
+  }).catch(function(error) {
+    console.log('codeSnippetFound', error);
   });
   
 });
@@ -74,11 +76,15 @@ function getCode(query, language) {
   // e.g.: query = "quicksort", language = "javascript"
   return getUrlOfTopSearchResult(query,language)
     .then(url => getHtml(url))
-    .then(html => getText(html));
+    .then(html => getText(html))
+    .catch(function(error) {
+      console.log('getCode getUrlOfTopSearchResult', error);
+    });
 }
 
 function getUrlOfTopSearchResult(query, language) {
   let searchString = query + " in " + language + " site:stackoverflow.com";
+  console.log('searchString:', searchString);
   return new Promise((resolve, reject) => {
     
     // use google --> get top search result --> get url
@@ -107,6 +113,8 @@ function getHtml(url) {
       } else {
         resolve(html);
       }
+    }).catch(function(error) {
+      console.log('getHtml', error);
     });
     
   });
@@ -116,7 +124,7 @@ function getText(html) {
   return new Promise((resolve, reject) => {
     
     // use html --> get specific html element --> get text
-    let $ = cheerio.load(html);
+    const $ = cheerio.load(html);
     resolve($('div.accepted-answer pre code').text()); // get text of code element in a pre in a div with class .accepted-answer
     
   });
