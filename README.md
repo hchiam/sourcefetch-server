@@ -2,7 +2,7 @@
 
 **Live demo:** https://codepen.io/hchiam/full/PEMgBN
 
-Just one of the things I'm learning. <a target="_blank" href="https://github.com/hchiam/learning">https://github.com/hchiam/learning</a>
+Just one of the things I'm learning. https://github.com/hchiam/learning
 
 **Setup:**
 ```
@@ -12,7 +12,7 @@ npm install
 node test.js
 ```
 
-Originally intended for use within my <a href="https://github.com/hchiam/language-user-interface" target="_blank">LUI</a> demo <a href="https://codepen.io/hchiam/full/WOLOJG" target="_blank">here</a>.
+Originally intended for use within my [LUI](https://github.com/hchiam/language-user-interface) demo [here](https://codepen.io/hchiam/full/WOLOJG).
 
 **Server:** https://sourcefetch-server.glitch.me
 
