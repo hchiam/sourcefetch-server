@@ -1,5 +1,3 @@
-"use strict";
-
 /* ******* OVERVIEW: *******
  *
  * A good place to start reading: getCode. Give it a searchString and a programmingLanguage to :
