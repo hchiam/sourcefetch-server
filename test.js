@@ -1,9 +1,9 @@
 "use strict";
 
-const test = require("tape").test;
-const request = require("request");
-const supertest = require("supertest");
-const app = require("./server.js");
+var test = require("tape").test;
+var request = require("request");
+var supertest = require("supertest");
+var app = require("./server.js");
 
 test("tape", function (t) {
   t.equal(1, 1, "tape itself should work");
@@ -17,7 +17,7 @@ test("test query to the url", function (t) {
     body
   ) {
     t.equal(error, null, "url query should have no error");
-    const code = JSON.parse(body).code;
+    var code = JSON.parse(body).code;
     t.equal(
       code,
       'def sort(array=[12,4,5,6,7,3,1,15]):\n    """Sort the array by using quicksort."""\n\n    less = []\n    equal = []\n    greater = []\n\n    if len(array) > 1:\n        pivot = array[0]\n        for x in array:\n            if x < pivot:\n                less.append(x)\n            elif x == pivot:\n                equal.append(x)\n            elif x > pivot:\n                greater.append(x)\n        # Don\'t forget to return something!\n        return sort(less)+equal+sort(greater)  # Just use the + operator to join lists\n    # Note that you want equal ^^^^^ not pivot\n    else:  # You need to handle the part at the end of the recursion - when you only have one element in your array, just return the array.\n        return array\n',

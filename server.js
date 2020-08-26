@@ -14,14 +14,14 @@
  */
 
 // import express.js to make it easier to write this app's code
-const express = require("express");
-const app = express();
+var express = require("express");
+var app = express();
 
 // import special functionality to search, get html, and web scrape
-// const google = require("google"); // search string --> url list
-const { google } = require("./helpers/google.js");
-const request = require("request"); // url --> html
-const cheerio = require("cheerio"); // html --> element text
+// var google = require("google"); // search string --> url list
+var { google } = require("./helpers/google.js");
+var request = require("request"); // url --> html
+var cheerio = require("cheerio"); // html --> element text
 
 // google.resultsPerPage = 1;
 
@@ -46,7 +46,7 @@ if (!process.env.DISABLE_XORIGIN) {
 app.use(express.static("public"));
 
 // make this app actually listen for requests
-const listener = app.listen(process.env.PORT | 3000, () => {
+var listener = app.listen(process.env.PORT | 3000, () => {
   // | 3000 in case testing locally
   console.log("Your app is listening on port " + listener.address().port);
 });
@@ -56,14 +56,14 @@ app.get("/fetch", (request, response) => {
   // you can optionally specify a programming language
 
   // set up search for code snippet
-  let searchString = request.query.q; // e.g.: q = "quicksort" <-- https://sourcefetch-server.glitch.me/fetch/?q=quicksort
-  let programmingLanguage = "javascript"; // JS by default
+  var searchString = request.query.q; // e.g.: q = "quicksort" <-- https://sourcefetch-server.glitch.me/fetch/?q=quicksort
+  var programmingLanguage = "javascript"; // JS by default
   if (request.query.lang !== undefined) {
     programmingLanguage = request.query.lang; // e.g.: lang=python <-- https://sourcefetch-server.glitch.me/fetch/?q=quicksort&lang=python
   }
 
   // get code snippet
-  let codeSnippetFound = getCode(searchString, programmingLanguage);
+  var codeSnippetFound = getCode(searchString, programmingLanguage);
 
   // send code snippet to user
   codeSnippetFound
@@ -88,15 +88,15 @@ function getCode(query, language) {
 }
 
 async function getUrlOfTopSearchResult(query, language) {
-  const searchString = query + " in " + language + " site:stackoverflow.com";
+  var searchString = query + " in " + language + " site:stackoverflow.com";
   console.log("searchString:", searchString);
-  const output = await google(searchString);
+  var output = await google(searchString);
 
   return new Promise((resolve, reject) => {
     // use google --> get top search result --> get url
-    const linksFound = output && output.length && output[0].link;
+    var linksFound = output && output.length && output[0].link;
     if (linksFound) {
-      let firstLink = output[0].link;
+      var firstLink = output[0].link;
       resolve(firstLink);
     } else if (output && output.length === 0) {
       reject({ reason: "No results found." });
@@ -125,7 +125,7 @@ function getHtml(url) {
 function getText(html) {
   return new Promise((resolve, reject) => {
     // use html --> get specific html element --> get text
-    const $ = cheerio.load(html);
+    var $ = cheerio.load(html);
     resolve($("div.accepted-answer pre code").text()); // get text of code element in a pre in a div with class .accepted-answer
   });
 }
