@@ -1,5 +1,7 @@
 # sourcefetch-server [![Build Status](https://travis-ci.org/hchiam/sourcefetch-server.svg?branch=master)](https://travis-ci.org/hchiam/sourcefetch-server)
 
+**Live demo:** <a href="https://codepen.io/hchiam/full/PEMgBN" target="_blank">https://codepen.io/hchiam/full/PEMgBN</a>
+
 Just one of the things I'm learning. <a target="_blank" href="https://github.com/hchiam/learning">https://github.com/hchiam/learning</a>
 
 **Setup:**
@@ -12,9 +14,7 @@ node test.js
 
 Originally intended for use within my <a href="https://github.com/hchiam/language-user-interface" target="_blank">LUI</a> demo <a href="https://codepen.io/hchiam/full/WOLOJG" target="_blank">here</a>.
 
-**Live demo:** <a href="https://codepen.io/hchiam/full/PEMgBN/" target="_blank">https://codepen.io/hchiam/full/PEMgBN/</a>
-
-**Server:** <a href="https://sourcefetch-server.glitch.me/" target="_blank">https://sourcefetch-server.glitch.me/</a>
+**Server:** <a href="https://sourcefetch-server.glitch.me" target="_blank">https://sourcefetch-server.glitch.me</a>
 
 **Code:** <a href="https://glitch.com/edit/#!/sourcefetch-server?path=server.js:1:0" target="_blank">https://glitch.com/edit/#!/sourcefetch-server?path=server.js:1:0</a>
 
