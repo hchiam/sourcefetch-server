@@ -1,6 +1,9 @@
 # automatic testing with Travis CI!
 
-language: javascript
+language: node_js
+
+node_js:
+  - 10
 
 before_script:
   - npm install
