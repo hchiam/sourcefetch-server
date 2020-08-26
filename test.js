@@ -1,5 +1,3 @@
-"use strict";
-
 var test = require("tape").test;
 var request = require("request");
 var supertest = require("supertest");
