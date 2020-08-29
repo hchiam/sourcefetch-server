@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client-side demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h2>Get Example Code Snippet</h2>
+
+    <div>
+      <input
+        id="words"
+        class="w3-card-4 w3-hover-blue w3-hover-shadow"
+        type="text"
+        oninput="triggerFetch()"
+        onkeydown="userWantsAnswerNow(event)"
+        placeholder="Example: class"
+        title="Enter what you’d like to see an example of. Hit Enter."
+        autofocus
+      />
+    </div>
+    <div>
+      <input
+        id="language"
+        class="w3-card-4 w3-hover-blue w3-hover-shadow"
+        type="text"
+        oninput="triggerFetch()"
+        onkeydown="userWantsAnswerNow(event)"
+        value="javascript"
+        placeholder="Example: javascript"
+        title="Enter a programming language."
+      />
+    </div>
+
+    <p id="wait"></p>
+
+    <div id="codebox">
+      <button
+        class="copyBtn w3-card-4 w3-hover-blue"
+        onclick="copyCodeToClipboard()"
+      >
+        Copy to Clipboard
+      </button>
+      <button class="copyBtn w3-card-4 w3-hover-blue" onclick="saveCode()">
+        Save to File
+      </button>
+      <div id="snippet" class="w3-card"></div>
+      <button
+        class="copyBtn w3-card-4 w3-hover-blue"
+        onclick="copyCodeToClipboard()"
+      >
+        Copy to Clipboard
+      </button>
+      <button class="copyBtn w3-card-4 w3-hover-blue" onclick="saveCode()">
+        Save to File
+      </button>
+    </div>
+
+    <br />
+
+    <div id="links">
+      <a
+        id="feedback"
+        href="https://goo.gl/forms/RXtmCM4fw2rFwufC2"
+        target="_blank"
+        >Feedback?</a
+      >
+      <p>
+        More info:
+        <a href="https://github.com/hchiam/sourcefetch-server" target="_blank"
+          >https://github.com/hchiam/sourcefetch-server</a
+        >
+      </p>
+    </div>
+    <script src="brain.js"></script>
+  </body>
+</html>
