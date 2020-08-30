@@ -16,12 +16,9 @@ var express = require("express");
 var app = express();
 
 // import special functionality to search, get html, and web scrape
-// var google = require("google"); // search string --> url list
 var { google } = require("./helpers/google.js");
 var request = require("request"); // url --> html
 var cheerio = require("cheerio"); // html --> element text
-
-// google.resultsPerPage = 1;
 
 // need this default block for this glitch.com server to work
 if (!process.env.DISABLE_XORIGIN) {
