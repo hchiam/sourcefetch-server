@@ -23,6 +23,14 @@ Originally intended for use within my [LUI](https://github.com/hchiam/language-u
 
 **SVN at:** https://github.com/hchiam/sourcefetch-server
 
+## A helpful note on a lesson learned with combining `async`/`await` with `.map`
+
+<https://stackoverflow.com/questions/40140149/use-async-await-with-array-map/40140562#40140562>
+
+**Problem:** If you give `await` an object that isn't a Promise (like what `.map` returns), then it'll evaluate immediately instead of actually waiting.
+
+**Solution:** Wrap the `.map` in `Promise.all`, like this: `await Promise.all(arr.map(async x => await someProcessing(x)))`
+
 ## Todo:
 
 - #13: get next result if there's no code in the first one

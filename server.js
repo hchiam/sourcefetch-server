@@ -74,12 +74,13 @@ app.get("/fetch", (request, response) => {
 
 function getCode(query, language) {
   // e.g.: query = "quicksort", language = "javascript"
-  return getUrlsOfTopSearchResults(query, language, 1)
-    .then((url) => getHtml(url))
-    .then((html) => getText(html))
+  var arrayOfCode = getUrlsOfTopSearchResults(query, language, 1)
+    .then((urls) => Promise.all(urls.map((url) => getHtml(url))))
+    .then((htmls) => Promise.all(htmls.map((html) => getText(html))))
     .catch(function (error) {
       console.log("getCode getUrlsOfTopSearchResults", error);
     });
+  return arrayOfCode;
 }
 
 async function getUrlsOfTopSearchResults(query, language, numberOfResults) {
@@ -91,9 +92,9 @@ async function getUrlsOfTopSearchResults(query, language, numberOfResults) {
     // use google --> get top search result --> get url
     var linksFound = output && output.length && output[0].link;
     if (linksFound) {
-      var firstLink = output[0].link;
+      // var firstLink = output[0].link;
       var urls = output.slice(0, numberOfResults).map((r) => r.link);
-      resolve(firstLink);
+      resolve(urls);
     } else if (output && output.length === 0) {
       reject({ reason: "No results found." });
     } else {
