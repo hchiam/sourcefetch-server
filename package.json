@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "open http://localhost:3000; node server.js",
+    "local": "cd client; npm run start",
     "test": "node test.js --harmony"
   },
   "dependencies": {
