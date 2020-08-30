@@ -2,13 +2,54 @@ var test = require("tape").test;
 var request = require("request");
 var supertest = require("supertest");
 var app = require("./server.js");
+var testCache = require("./test-cache.js");
 
 test("tape", function (t) {
   t.equal(1, 1, "tape itself should work");
   t.end();
 });
 
-test("test query to the url", function (t) {
+test("test getUrlsOfTopSearchResults from search query inputs", async function (t) {
+  var query = "quicksort";
+  var language = "python";
+  var numberOfResults = 1;
+  var actual = await app.getUrlsOfTopSearchResults(
+    query,
+    language,
+    numberOfResults
+  );
+  var expectedToInclude =
+    "https://www.google.com//url?q=https://stackoverflow.com/questions/18262306/quicksort-with-python";
+  var urlMatchesWithoutQueryParameters =
+    actual.indexOf(expectedToInclude) !== -1;
+  t.true(urlMatchesWithoutQueryParameters);
+  t.end();
+  // process.exit(); // to just run this test, un-comment this line and comment out later tests
+});
+
+test("test getHtml from URL", async function (t) {
+  var url =
+    "https://stackoverflow.com/questions/18262306/quicksort-with-python";
+  var actual = await app.getHtml(url);
+  var startOfTag = "<";
+  var codeTag = "<code>";
+  var containsStartOfTag = actual.indexOf(startOfTag) !== -1;
+  var containsCodeTag = actual.indexOf(codeTag) !== -1;
+  t.true(containsStartOfTag);
+  t.true(containsCodeTag);
+  t.end();
+  // process.exit(); // to just run this test, un-comment this line and comment out later tests
+});
+
+test("test getText of code from HTML", async function (t) {
+  var actual = await app.getText(testCache.testHtml);
+  var expected = testCache.testCode;
+  t.equal(actual, expected);
+  t.end();
+  // process.exit(); // to just run this test, un-comment this line and comment out later tests
+});
+
+test("test query to the url", async function (t) {
   request("http://localhost:3000/fetch/?q=quicksort&lang=python", function (
     error,
     response,
@@ -22,6 +63,7 @@ test("test query to the url", function (t) {
       "url query body code should equal json response"
     );
     t.end();
+    // process.exit(); // to just run this test, un-comment this line and comment out later tests
   });
 });
 

@@ -6,7 +6,7 @@
  *
  * The important steps in the code are :
  *
- * getUrlOfTopSearchResult (using 'google') --> getHtml (using 'request') --> getText (using 'cheerio') --> code snippet!
+ * getUrlsOfTopSearchResults (using 'google') --> getHtml (using 'request') --> getText (using 'cheerio') --> code snippet!
  *
  * *************************
  */
@@ -74,15 +74,15 @@ app.get("/fetch", (request, response) => {
 
 function getCode(query, language) {
   // e.g.: query = "quicksort", language = "javascript"
-  return getUrlOfTopSearchResult(query, language)
+  return getUrlsOfTopSearchResults(query, language, 1)
     .then((url) => getHtml(url))
     .then((html) => getText(html))
     .catch(function (error) {
-      console.log("getCode getUrlOfTopSearchResult", error);
+      console.log("getCode getUrlsOfTopSearchResults", error);
     });
 }
 
-async function getUrlOfTopSearchResult(query, language) {
+async function getUrlsOfTopSearchResults(query, language, numberOfResults) {
   var searchString = query + " in " + language + " site:stackoverflow.com";
   console.log("searchString:", searchString);
   var output = await google(searchString);
@@ -92,6 +92,7 @@ async function getUrlOfTopSearchResult(query, language) {
     var linksFound = output && output.length && output[0].link;
     if (linksFound) {
       var firstLink = output[0].link;
+      var urls = output.slice(0, numberOfResults).map((r) => r.link);
       resolve(firstLink);
     } else if (output && output.length === 0) {
       reject({ reason: "No results found." });
@@ -121,6 +122,20 @@ function getText(html) {
   return new Promise((resolve, reject) => {
     // use html --> get specific html element --> get text
     var $ = cheerio.load(html);
-    resolve($("div.accepted-answer pre code").text()); // get text of code element in a pre in a div with class .accepted-answer
+    var text = $("div.accepted-answer pre code").text();
+    resolve(text); // get text of code element in a pre in a div with class .accepted-answer
+  }).catch(function (error) {
+    console.log("getHtml", error);
   });
+}
+
+if (typeof exports !== "undefined") {
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+      getCode,
+      getUrlsOfTopSearchResults,
+      getHtml,
+      getText,
+    };
+  }
 }
