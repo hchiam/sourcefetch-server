@@ -74,12 +74,12 @@ app.get("/fetch", (request, response) => {
 
 function getCode(query, language = "javascript") {
   // e.g.: query = "quicksort", language = "javascript"
-  var arrayOfCode = getUrlsOfTopSearchResults(query, language, 1)
+  var numberOfResults = 5;
+  var arrayOfCode = getUrlsOfTopSearchResults(query, language, numberOfResults)
     .then((urls) => Promise.all(urls.map((url) => getHtml(url))))
-    .then(
-      (htmls) =>
-        Promise.all(htmls.map((html) => getText(html))).filter((x) => x)[0] // get first with code
-    )
+    .then((htmls) => Promise.all(htmls.map((html) => getText(html))))
+    .then((texts) => texts.filter((text) => text != ""))
+    .then((texts) => texts[0]) // first one
     .catch(function (error) {
       console.log("getCode getUrlsOfTopSearchResults", error);
     });
