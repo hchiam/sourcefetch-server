@@ -92,6 +92,23 @@ test("test query to the url", async function (t) {
   });
 });
 
+test("test getting next result if there's no code in the first one", async function (t) {
+  request("http://localhost:3000/fetch/?q=stream", function (
+    error,
+    response,
+    body
+  ) {
+    t.equal(error, null, "url query should have no error");
+
+    var codeArray = JSON.parse(body).code;
+    var firstCodeText = codeArray[0];
+    t.true(Array.isArray(codeArray), "url query body code should be an array");
+    t.equal(firstCodeText, "", "first code text should be empty");
+    t.end();
+    process.exit(); // to just run this test, un-comment this line and comment out later tests
+  });
+});
+
 /*
  * this next test is inspired by code found here:
  * https://puigcerber.com/2015/11/27/testing-express-apis-with-tape-and-supertest/

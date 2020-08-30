@@ -72,21 +72,29 @@ app.get("/fetch", (request, response) => {
 
 // ******* DETAILS OF getCode: CHAINED "PROMISES" *******
 
-function getCode(query, language) {
+function getCode(query, language = "javascript") {
   // e.g.: query = "quicksort", language = "javascript"
   var arrayOfCode = getUrlsOfTopSearchResults(query, language, 1)
     .then((urls) => Promise.all(urls.map((url) => getHtml(url))))
-    .then((htmls) => Promise.all(htmls.map((html) => getText(html))))
+    .then(
+      (htmls) =>
+        Promise.all(htmls.map((html) => getText(html))).filter((x) => x)[0] // get first with code
+    )
     .catch(function (error) {
       console.log("getCode getUrlsOfTopSearchResults", error);
     });
   return arrayOfCode;
 }
 
-async function getUrlsOfTopSearchResults(query, language, numberOfResults) {
+async function getUrlsOfTopSearchResults(
+  query,
+  language = "javascript",
+  numberOfResults
+) {
   var searchString = query + " in " + language + " site:stackoverflow.com";
   console.log("searchString:", searchString);
   var output = await google(searchString);
+  console.log("output", output);
 
   return new Promise((resolve, reject) => {
     // use google --> get top search result --> get url
@@ -100,6 +108,8 @@ async function getUrlsOfTopSearchResults(query, language, numberOfResults) {
     } else {
       reject({ reason: "Search error." });
     }
+  }).catch(function (error) {
+    console.log("getUrlsOfTopSearchResults", error);
   });
 }
 

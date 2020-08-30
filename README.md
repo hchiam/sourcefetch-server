@@ -30,7 +30,3 @@ Originally intended for use within my [LUI](https://github.com/hchiam/language-u
 **Problem:** If you give `await` an object that isn't a Promise (like what `.map` returns), then it'll evaluate immediately instead of actually waiting.
 
 **Solution:** Wrap the `.map` in `Promise.all`, like this: `await Promise.all(arr.map(async x => await someProcessing(x)))`
-
-## Todo:
-
-- #13: get next result if there's no code in the first one
