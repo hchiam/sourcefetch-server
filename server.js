@@ -94,7 +94,6 @@ async function getUrlsOfTopSearchResults(
   var searchString = query + " in " + language + " site:stackoverflow.com";
   console.log("searchString:", searchString);
   var output = await google(searchString);
-  console.log("output", output);
 
   return new Promise((resolve, reject) => {
     // use google --> get top search result --> get url
