@@ -75,7 +75,7 @@ app.get("/fetch", (request, response) => {
 function getCode(query, language = "javascript") {
   // e.g.: query = "quicksort", language = "javascript"
   var numberOfResults = 5;
-  var arrayOfCode = getUrlsOfTopSearchResults(query, language, numberOfResults)
+  var codeText = getUrlsOfTopSearchResults(query, language, numberOfResults)
     .then((urls) => Promise.all(urls.map((url) => getHtml(url))))
     .then((htmls) => Promise.all(htmls.map((html) => getText(html))))
     .then((texts) => texts.filter((text) => text != ""))
@@ -83,7 +83,7 @@ function getCode(query, language = "javascript") {
     .catch(function (error) {
       console.log("getCode getUrlsOfTopSearchResults", error);
     });
-  return arrayOfCode;
+  return codeText;
 }
 
 async function getUrlsOfTopSearchResults(
