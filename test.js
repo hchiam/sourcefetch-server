@@ -13,14 +13,12 @@ test("test getCode from search query inputs", async function (t) {
   var query = "quicksort";
   var language = "python";
 
-  var codeArray = await app.getCode(query, language);
-  var firstCodeText = codeArray[0];
-
+  var actual = await app.getCode(query, language);
   var expected =
     'def sort(array=[12,4,5,6,7,3,1,15]):\n    """Sort the array by using quicksort."""\n\n    less = []\n    equal = []\n    greater = []\n\n    if len(array) > 1:\n        pivot = array[0]\n        for x in array:\n            if x < pivot:\n                less.append(x)\n            elif x == pivot:\n                equal.append(x)\n            elif x > pivot:\n                greater.append(x)\n        # Don\'t forget to return something!\n        return sort(less)+equal+sort(greater)  # Just use the + operator to join lists\n    # Note that you want equal ^^^^^ not pivot\n    else:  # You need to handle the part at the end of the recursion - when you only have one element in your array, just return the array.\n        return array\n';
 
-  t.true(Array.isArray(codeArray), "outputs an array");
-  t.equal(firstCodeText, expected, "check results of getCode");
+  t.false(Array.isArray(actual), "output is NOT an array");
+  t.equal(actual, expected, "check results of getCode");
   t.end();
   // process.exit(); // to just run this test, un-comment this line and comment out later tests
 });
@@ -54,11 +52,15 @@ test("test getUrlsOfTopSearchResults from search query inputs", async function (
 test("test getHtml from URL", async function (t) {
   var url =
     "https://stackoverflow.com/questions/18262306/quicksort-with-python";
+
   var actual = await app.getHtml(url);
+
   var startOfTag = "<";
   var codeTag = "<code>";
+
   var containsStartOfTag = actual.indexOf(startOfTag) !== -1;
   var containsCodeTag = actual.indexOf(codeTag) !== -1;
+
   t.true(containsStartOfTag, "HTML contains start of tag <");
   t.true(containsCodeTag, "HTML contains <code> tag");
   t.end();
@@ -81,18 +83,21 @@ test("test query to the url", async function (t) {
   ) {
     t.equal(error, null, "url query should have no error");
 
-    var codeArray = JSON.parse(body).code;
-    var firstCodeText = codeArray[0];
-    var expectedCodeText =
+    var actual = JSON.parse(body).code;
+    var expected =
       'def sort(array=[12,4,5,6,7,3,1,15]):\n    """Sort the array by using quicksort."""\n\n    less = []\n    equal = []\n    greater = []\n\n    if len(array) > 1:\n        pivot = array[0]\n        for x in array:\n            if x < pivot:\n                less.append(x)\n            elif x == pivot:\n                equal.append(x)\n            elif x > pivot:\n                greater.append(x)\n        # Don\'t forget to return something!\n        return sort(less)+equal+sort(greater)  # Just use the + operator to join lists\n    # Note that you want equal ^^^^^ not pivot\n    else:  # You need to handle the part at the end of the recursion - when you only have one element in your array, just return the array.\n        return array\n';
-    t.true(Array.isArray(codeArray), "url query body code should be an array");
-    t.equal(firstCodeText, expectedCodeText, "first code text should match");
+
+    t.false(
+      Array.isArray(actual),
+      "url query body code should NOT be an array"
+    );
+    t.equal(actual, expected, "code text should match");
     t.end();
     // process.exit(); // to just run this test, un-comment this line and comment out later tests
   });
 });
 
-test("test getting next result if there's no code in the first one", async function (t) {
+test("test getting next result if there's no code in the first one (in google search)", async function (t) {
   request("http://localhost:3000/fetch/?q=stream", function (
     error,
     response,
@@ -100,12 +105,15 @@ test("test getting next result if there's no code in the first one", async funct
   ) {
     t.equal(error, null, "url query should have no error");
 
-    var codeArray = JSON.parse(body).code;
-    var firstCodeText = codeArray[0];
-    t.true(Array.isArray(codeArray), "url query body code should be an array");
-    t.equal(firstCodeText, "", "first code text should be empty");
+    var actual = JSON.parse(body).code;
+
+    t.false(
+      Array.isArray(actual),
+      "url query body code should NOT be an array"
+    );
+    t.true(actual !== "", "code text should NOT be empty");
     t.end();
-    process.exit(); // to just run this test, un-comment this line and comment out later tests
+    // process.exit(); // to just run this test, un-comment this line and comment out later tests
   });
 });
 
@@ -119,18 +127,13 @@ test("GET /fetch/?q=quicksort&lang=python", function (t) {
     .expect(200)
     .expect("Content-Type", /json/)
     .end(function (err, res) {
-      var codeArray = res.body.code;
-      var firstCodeText = codeArray[0];
-      var expectedCodeText =
+      var actual = res.body.code;
+      var expected =
         'def sort(array=[12,4,5,6,7,3,1,15]):\n    """Sort the array by using quicksort."""\n\n    less = []\n    equal = []\n    greater = []\n\n    if len(array) > 1:\n        pivot = array[0]\n        for x in array:\n            if x < pivot:\n                less.append(x)\n            elif x == pivot:\n                equal.append(x)\n            elif x > pivot:\n                greater.append(x)\n        # Don\'t forget to return something!\n        return sort(less)+equal+sort(greater)  # Just use the + operator to join lists\n    # Note that you want equal ^^^^^ not pivot\n    else:  # You need to handle the part at the end of the recursion - when you only have one element in your array, just return the array.\n        return array\n';
 
       t.error(err, "server should have no error");
-      t.true(Array.isArray(codeArray), "server should respond with an array");
-      t.equal(
-        firstCodeText,
-        expectedCodeText,
-        "server should respond with expected response"
-      );
+      t.false(Array.isArray(actual), "server response should NOT be an array");
+      t.equal(actual, expected, "server should respond with expected response");
       t.end();
       process.exit();
     });
