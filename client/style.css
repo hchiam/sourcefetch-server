@@ -22,6 +22,18 @@ input {
   width: 250px;
   text-align: center;
 }
+input::-webkit-input-placeholder {
+  font-style: italic;
+}
+input:-moz-placeholder {
+  font-style: italic;
+}
+input::-moz-placeholder {
+  font-style: italic;
+}
+input:-ms-input-placeholder {
+  font-style: italic;
+}
 
 a {
   color: lawngreen;
