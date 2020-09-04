@@ -1,4 +1,6 @@
 $p: 10px
+$background: darkslategrey
+$shadow_color: rgba(0,0,0,0.5)
 
 body
   background: rgb(40,40,30)
@@ -57,7 +59,7 @@ button
   text-align: left
   color: lawngreen
   padding: $p
-  background: darkslategrey
+  // background: darkslategrey // comment out to use .scroll-shadow
   border-radius: $p
   padding: $p*4
   visibility: hidden
@@ -85,3 +87,11 @@ button
   background: #2196f3
   color: white
 
+.scroll-shadow
+  overflow-x: auto
+  overflow-y: hidden
+  background: linear-gradient($background, $background) 0% 0%, linear-gradient($background, $background) 100% 0%, radial-gradient(farthest-side at 0% 50%, $shadow_color, transparent) 0% 50%, radial-gradient(farthest-side at 100% 50%, $shadow_color, transparent) 100% 50%
+  background-repeat: no-repeat
+  background-color: $background
+  background-size: 14px 100%
+  background-attachment: local, local, scroll, scroll

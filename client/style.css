@@ -67,10 +67,16 @@ button {
   text-align: left;
   color: lawngreen;
   padding: 10px;
-  background: darkslategrey;
   border-radius: 10px;
   padding: 40px;
   visibility: hidden;
+  overflow: scroll;
+  white-space: pre;
+}
+#snippet p {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: monospace;
 }
 
 #codebox {
@@ -87,6 +93,21 @@ button {
 
 #feedback {
   visibility: hidden;
+}
+
+#words:focus, #language:focus {
+  background: #2196f3;
+  color: white;
+}
+
+.scroll-shadow {
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: linear-gradient(darkslategrey, darkslategrey) 0% 0%, linear-gradient(darkslategrey, darkslategrey) 100% 0%, radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, 0.5), transparent) 0% 50%, radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.5), transparent) 100% 50%;
+  background-repeat: no-repeat;
+  background-color: darkslategrey;
+  background-size: 14px 100%;
+  background-attachment: local, local, scroll, scroll;
 }
 
 /*# sourceMappingURL=style.css.map */
