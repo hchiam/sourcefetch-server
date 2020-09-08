@@ -1,4 +1,4 @@
-# sourcefetch-server [![Build Status](https://travis-ci.org/hchiam/sourcefetch-server.svg?branch=master)](https://travis-ci.org/hchiam/sourcefetch-server)
+# sourcefetch-server [![version](https://img.shields.io/github/release/hchiam/sourcefetch-server)](https://github.com/hchiam/sourcefetch-server/releases) [![Build Status](https://travis-ci.org/hchiam/sourcefetch-server.svg?branch=master)](https://travis-ci.org/hchiam/sourcefetch-server)
 
 **Live demo:** https://codepen.io/hchiam/full/PEMgBN
 
