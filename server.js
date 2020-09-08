@@ -63,7 +63,11 @@ app.get("/fetch", (request, response) => {
   // send code snippet to user
   codeSnippetFound
     .then(function (result) {
-      var { url, code } = codeSnippetFound;
+      if (!result) {
+        response.type("json").send({ code: "", url: "" });
+        return;
+      }
+      var { url, code } = result;
       response.type("json").send({ code, url });
     })
     .catch(function (error) {
@@ -106,7 +110,7 @@ async function getUrlsOfTopSearchResults(
 ) {
   var searchString = query + " in " + language + " site:stackoverflow.com";
   console.log("searchString:", searchString);
-  var output = await google(searchString);
+  var output = await google(searchString, numberOfResults);
 
   return new Promise((resolve, reject) => {
     // use google --> get top search result --> get url
@@ -145,7 +149,8 @@ function getText(html) {
   return new Promise((resolve, reject) => {
     // use html --> get specific html element --> get text
     var $ = cheerio.load(html);
-    var text = $("div.accepted-answer pre code").text();
+    var codeSnippet = $("div.accepted-answer pre code");
+    var text = codeSnippet ? codeSnippet.text() : "";
     resolve(text); // get text of code element in a pre in a div with class .accepted-answer
   }).catch(function (error) {
     console.log("getHtml", error);

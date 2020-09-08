@@ -18,11 +18,11 @@ var cheerio = require("cheerio");
 //   console.log(await google(queryBiasedToJs));
 // })();
 
-async function google(what) {
+async function google(what, numberOfResults) {
   var url = `https://www.google.com/search?q=${what}`;
   try {
     var html = await axios.get(url);
-    var howManyResults = 3;
+    var howManyResults = numberOfResults || 3;
     var searchResults = []; // {header:'', link:'', description:''}
     var body = await cheerio.load(html.data);
     body("h3")

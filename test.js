@@ -9,16 +9,16 @@ test("tape", function (t) {
   t.end();
 });
 
-test("test getCode from search query inputs", async function (t) {
+test("test getCodeAndUrls from search query inputs", async function (t) {
   var query = "quicksort";
   var language = "python";
 
-  var actual = await app.getCodeAndUrls(query, language).code;
+  var actual = await app.getCodeAndUrls(query, language);
   var expected =
     'def sort(array=[12,4,5,6,7,3,1,15]):\n    """Sort the array by using quicksort."""\n\n    less = []\n    equal = []\n    greater = []\n\n    if len(array) > 1:\n        pivot = array[0]\n        for x in array:\n            if x < pivot:\n                less.append(x)\n            elif x == pivot:\n                equal.append(x)\n            elif x > pivot:\n                greater.append(x)\n        # Don\'t forget to return something!\n        return sort(less)+equal+sort(greater)  # Just use the + operator to join lists\n    # Note that you want equal ^^^^^ not pivot\n    else:  # You need to handle the part at the end of the recursion - when you only have one element in your array, just return the array.\n        return array\n';
 
   t.false(Array.isArray(actual), "output is NOT an array");
-  t.equal(actual, expected, "check results of getCode");
+  t.equal(actual, expected, "check results of getCodeAndUrls");
   t.end();
   // process.exit(); // to just run this test, un-comment this line and comment out later tests
 });
