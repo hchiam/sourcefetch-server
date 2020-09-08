@@ -48,7 +48,16 @@
       <button class="copyBtn w3-card-4 w3-hover-blue" onclick="saveCode()">
         Save to File
       </button>
+      <button
+        class="copyBtn w3-card-4 w3-hover-blue url"
+        onclick="goToUrl(this.getAttribute('data-url'))"
+        data-url=""
+      >
+        Go to URL
+      </button>
+
       <div id="snippet" class="w3-card scroll-shadow"></div>
+
       <button
         class="copyBtn w3-card-4 w3-hover-blue"
         onclick="copyCodeToClipboard()"
@@ -57,6 +66,13 @@
       </button>
       <button class="copyBtn w3-card-4 w3-hover-blue" onclick="saveCode()">
         Save to File
+      </button>
+      <button
+        class="copyBtn w3-card-4 w3-hover-blue url"
+        onclick="goToUrl(this.getAttribute('data-url'))"
+        data-url=""
+      >
+        Go to URL
       </button>
     </div>
 
