@@ -2,6 +2,7 @@ wakeUpServer();
 
 let tmr;
 let tries = 0;
+// let serverUrlStart = "http://localhost:3000/fetch";
 let serverUrlStart = "https://sourcefetch-server.glitch.me/fetch";
 let code = "";
 let spd = 50;
@@ -63,6 +64,21 @@ function fetchCode() {
       $("#snippet").show(spd);
     } else {
       msgNoSnippetFound();
+    }
+
+    var urlElements = Array.from(document.getElementsByClassName("url"));
+    if (response.url) {
+      urlElements.forEach(function (item) {
+        item.setAttribute("data-url", response.url);
+      });
+    } else {
+      var query = words + " in " + lang + " site:stackoverflow.com";
+      urlElements.forEach(function (item) {
+        item.setAttribute(
+          "data-url",
+          "https://www.google.com/search?q=" + query
+        );
+      });
     }
   });
 }
@@ -133,6 +149,10 @@ function saveCode() {
 
 function cleanupString(name) {
   return name.replace(" ", "_").replace(/[.,;:'"\/\\<>?!]/g, "");
+}
+
+function goToUrl(url) {
+  window.open(url);
 }
 
 function msgWaitForAPIServer() {

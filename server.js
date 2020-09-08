@@ -58,12 +58,17 @@ app.get("/fetch", (request, response) => {
   }
 
   // get code snippet
-  var codeSnippetFound = getCode(searchString, programmingLanguage);
+  var codeSnippetFound = getCodeAndUrls(searchString, programmingLanguage);
 
   // send code snippet to user
   codeSnippetFound
     .then(function (result) {
-      response.type("json").send({ code: result });
+      if (!result) {
+        response.type("json").send({ code: "", url: "" });
+        return;
+      }
+      var { url, code } = result;
+      response.type("json").send({ code, url });
     })
     .catch(function (error) {
       console.log("codeSnippetFound", error);
@@ -72,14 +77,26 @@ app.get("/fetch", (request, response) => {
 
 // ******* DETAILS OF getCode: CHAINED "PROMISES" *******
 
-function getCode(query, language = "javascript") {
+function getCodeAndUrls(query, language = "javascript") {
   // e.g.: query = "quicksort", language = "javascript"
   var numberOfResults = 5;
   var codeText = getUrlsOfTopSearchResults(query, language, numberOfResults)
-    .then((urls) => Promise.all(urls.map((url) => getHtml(url))))
-    .then((htmls) => Promise.all(htmls.map((html) => getText(html))))
-    .then((texts) => texts.filter((text) => text != ""))
-    .then((texts) => texts[0]) // first one
+    .then((urls) =>
+      Promise.all(
+        urls.map(async (url) => ({ url: url, html: await getHtml(url) }))
+      )
+    )
+    .then((data) =>
+      Promise.all(
+        data.map(async (d) => ({
+          url: d.url
+            .replace("https://www.google.com//url?q=", "")
+            .replace(/&usg=.+$/, ""),
+          code: await getText(d.html),
+        }))
+      )
+    )
+    .then((data) => data.filter((d) => d.code != "")[0]) // first one with code, if any
     .catch(function (error) {
       console.log("getCode getUrlsOfTopSearchResults", error);
     });
@@ -93,7 +110,7 @@ async function getUrlsOfTopSearchResults(
 ) {
   var searchString = query + " in " + language + " site:stackoverflow.com";
   console.log("searchString:", searchString);
-  var output = await google(searchString);
+  var output = await google(searchString, numberOfResults);
 
   return new Promise((resolve, reject) => {
     // use google --> get top search result --> get url
@@ -132,7 +149,8 @@ function getText(html) {
   return new Promise((resolve, reject) => {
     // use html --> get specific html element --> get text
     var $ = cheerio.load(html);
-    var text = $("div.accepted-answer pre code").text();
+    var codeSnippet = $("div.accepted-answer pre code");
+    var text = codeSnippet ? codeSnippet.text() : "";
     resolve(text); // get text of code element in a pre in a div with class .accepted-answer
   }).catch(function (error) {
     console.log("getHtml", error);
@@ -142,7 +160,7 @@ function getText(html) {
 if (typeof exports !== "undefined") {
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {
-      getCode,
+      getCodeAndUrls,
       getUrlsOfTopSearchResults,
       getHtml,
       getText,
