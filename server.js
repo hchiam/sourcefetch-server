@@ -57,13 +57,14 @@ app.get("/fetch", (request, response) => {
     programmingLanguage = request.query.lang; // e.g.: lang=python <-- https://sourcefetch-server.glitch.me/fetch/?q=quicksort&lang=python
   }
 
-  // get code snippet
-  var codeSnippetFound = getCode(searchString, programmingLanguage);
+  // get code snippet and URL
+  var codeSnippetFound = getCodeAndUrls(searchString, programmingLanguage);
 
   // send code snippet to user
   codeSnippetFound
     .then(function (result) {
-      response.type("json").send({ code: result });
+      // var { code, url } = codeSnippetFound;
+      response.type("json").send(codeSnippetFound);
     })
     .catch(function (error) {
       console.log("codeSnippetFound", error);
@@ -71,6 +72,32 @@ app.get("/fetch", (request, response) => {
 });
 
 // ******* DETAILS OF getCode: CHAINED "PROMISES" *******
+
+function getCodeAndUrls(query, language = "javascript") {
+  // e.g.: query = "quicksort", language = "javascript"
+  var numberOfResults = 5;
+  var result = getUrlsOfTopSearchResults(query, language, numberOfResults)
+    .then((urls) =>
+      Promise.all(
+        urls.map((url) => {
+          return { url: url, html: getHtml(url) };
+        })
+      )
+    )
+    .then((data) =>
+      Promise.all(
+        data.map((d) => {
+          return { url: d.url, code: getText(d.html) };
+        })
+      )
+    )
+    // .then((data) => data.filter((d) => d.code != ""))
+    // .then((data) => data[0]) // first one
+    .catch(function (error) {
+      console.log("getCodeAndUrls getUrlsOfTopSearchResults", error);
+    });
+  return result;
+}
 
 function getCode(query, language = "javascript") {
   // e.g.: query = "quicksort", language = "javascript"
