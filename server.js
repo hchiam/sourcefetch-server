@@ -57,14 +57,14 @@ app.get("/fetch", (request, response) => {
     programmingLanguage = request.query.lang; // e.g.: lang=python <-- https://sourcefetch-server.glitch.me/fetch/?q=quicksort&lang=python
   }
 
-  // get code snippet and URL
+  // get code snippet
   var codeSnippetFound = getCodeAndUrls(searchString, programmingLanguage);
 
   // send code snippet to user
   codeSnippetFound
     .then(function (result) {
-      // var { code, url } = codeSnippetFound;
-      response.type("json").send(codeSnippetFound);
+      var { url, code } = codeSnippetFound;
+      response.type("json").send({ code, url });
     })
     .catch(function (error) {
       console.log("codeSnippetFound", error);
@@ -76,37 +76,23 @@ app.get("/fetch", (request, response) => {
 function getCodeAndUrls(query, language = "javascript") {
   // e.g.: query = "quicksort", language = "javascript"
   var numberOfResults = 5;
-  var result = getUrlsOfTopSearchResults(query, language, numberOfResults)
+  var codeText = getUrlsOfTopSearchResults(query, language, numberOfResults)
     .then((urls) =>
       Promise.all(
-        urls.map((url) => {
-          return { url: url, html: getHtml(url) };
-        })
+        urls.map(async (url) => ({ url: url, html: await getHtml(url) }))
       )
     )
     .then((data) =>
       Promise.all(
-        data.map((d) => {
-          return { url: d.url, code: getText(d.html) };
-        })
+        data.map(async (d) => ({
+          url: d.url
+            .replace("https://www.google.com//url?q=", "")
+            .replace(/&usg=.+$/, ""),
+          code: await getText(d.html),
+        }))
       )
     )
-    // .then((data) => data.filter((d) => d.code != ""))
-    // .then((data) => data[0]) // first one
-    .catch(function (error) {
-      console.log("getCodeAndUrls getUrlsOfTopSearchResults", error);
-    });
-  return result;
-}
-
-function getCode(query, language = "javascript") {
-  // e.g.: query = "quicksort", language = "javascript"
-  var numberOfResults = 5;
-  var codeText = getUrlsOfTopSearchResults(query, language, numberOfResults)
-    .then((urls) => Promise.all(urls.map((url) => getHtml(url))))
-    .then((htmls) => Promise.all(htmls.map((html) => getText(html))))
-    .then((texts) => texts.filter((text) => text != ""))
-    .then((texts) => texts[0]) // first one
+    .then((data) => data.filter((d) => d.code != "")[0]) // first one with code, if any
     .catch(function (error) {
       console.log("getCode getUrlsOfTopSearchResults", error);
     });
@@ -169,7 +155,7 @@ function getText(html) {
 if (typeof exports !== "undefined") {
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {
-      getCode,
+      getCodeAndUrls,
       getUrlsOfTopSearchResults,
       getHtml,
       getText,
