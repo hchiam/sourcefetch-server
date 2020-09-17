@@ -1,4 +1,7 @@
-wakeUpServer();
+let aLittleLessThan5Minutes = 255000;
+setInterval(function () {
+  wakeUpServer();
+}, aLittleLessThan5Minutes);
 
 let tmr;
 let tries = 0;
