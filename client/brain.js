@@ -1,3 +1,5 @@
+wakeUpServer();
+
 let aLittleLessThan5Minutes = 255000;
 setInterval(function () {
   wakeUpServer();
